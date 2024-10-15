@@ -1,0 +1,347 @@
+about:
+  date: October 15, 2024 19:19:31
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 11
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Budget:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: project_id
+      required: true
+    - name: amount
+      required: true
+    - name: allocated_date
+    description: Table tracking budget allocations for projects.
+    info_list: Table tracking budget allocations for projects.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - budget_id
+      name: ExpenseList
+      resource: Expense
+    - direction: toone
+      fks:
+      - project_id
+      name: project
+      resource: Project
+    type: Budget
+    user_key: id
+  Contract:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: contractor_id
+      required: true
+    - name: project_id
+      required: true
+    - name: start_date
+      required: true
+    - name: end_date
+    description: Contracts between projects and contractors.
+    info_list: Contracts between projects and contractors.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - contract_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - contractor_id
+      name: contractor
+      resource: Contractor
+    - direction: toone
+      fks:
+      - project_id
+      name: project
+      resource: Project
+    type: Contract
+    user_key: id
+  Contractor:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: contact_info
+    - name: id
+    description: Table of contractors working on projects.
+    info_list: Table of contractors working on projects.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - contractor_id
+      name: ContractList
+      resource: Contract
+    type: Contractor
+    user_key: name
+  Employee:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: role
+      required: true
+    - name: id
+    description: Employees involved in construction projects.
+    info_list: Employees involved in construction projects.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - employee_id
+      name: EmployeeAssignmentList
+      resource: EmployeeAssignment
+    type: Employee
+    user_key: name
+  EmployeeAssignment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: employee_id
+      required: true
+    - name: project_id
+      required: true
+    - name: assignment_date
+    description: Assignment of employees to specific projects.
+    info_list: Assignment of employees to specific projects.
+    tab_groups:
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    - direction: toone
+      fks:
+      - project_id
+      name: project
+      resource: Project
+    type: EmployeeAssignment
+    user_key: id
+  Equipment:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: maintainer
+    - name: id
+    description: Equipment inventory for construction projects.
+    info_list: Equipment inventory for construction projects.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - equipment_id
+      name: EquipmentUsageList
+      resource: EquipmentUsage
+    type: Equipment
+    user_key: name
+  EquipmentUsage:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: equipment_id
+      required: true
+    - name: project_id
+      required: true
+    - name: usage_hours
+      required: true
+    - name: usage_date
+      required: true
+    description: Usage records of equipment on projects.
+    info_list: Usage records of equipment on projects.
+    tab_groups:
+    - direction: toone
+      fks:
+      - equipment_id
+      name: equipment
+      resource: Equipment
+    - direction: toone
+      fks:
+      - project_id
+      name: project
+      resource: Project
+    type: EquipmentUsage
+    user_key: id
+  Expense:
+    attributes:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+    - name: budget_id
+      required: true
+    - name: amount
+      required: true
+    - name: expense_date
+      required: true
+    - name: id
+    description: Table for recording expenses against budgets.
+    info_list: Table for recording expenses against budgets.
+    tab_groups:
+    - direction: toone
+      fks:
+      - budget_id
+      name: budget
+      resource: Budget
+    type: Expense
+    user_key: description
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: contract_id
+      required: true
+    - name: amount
+      required: true
+    - name: payment_date
+    description: Payments made to contractors.
+    info_list: Payments made to contractors.
+    tab_groups:
+    - direction: toone
+      fks:
+      - contract_id
+      name: contract
+      resource: Contract
+    type: Payment
+    user_key: id
+  Project:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: start_date
+    - name: end_date
+    - name: id
+    description: Table representing construction projects.
+    info_list: Table representing construction projects.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - project_id
+      name: BudgetList
+      resource: Budget
+    - direction: tomany
+      fks:
+      - project_id
+      name: ContractList
+      resource: Contract
+    - direction: tomany
+      fks:
+      - project_id
+      name: EmployeeAssignmentList
+      resource: EmployeeAssignment
+    - direction: tomany
+      fks:
+      - project_id
+      name: EquipmentUsageList
+      resource: EquipmentUsage
+    - direction: tomany
+      fks:
+      - project_id
+      name: ResourceAllocationList
+      resource: ResourceAllocation
+    type: Project
+    user_key: name
+  Resource:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: cost_per_unit
+      required: true
+    - name: supplier
+    - name: id
+    description: Resources used for construction projects.
+    info_list: Resources used for construction projects.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - resource_id
+      name: ResourceAllocationList
+      resource: ResourceAllocation
+    type: Resource
+    user_key: name
+  ResourceAllocation:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: project_id
+      required: true
+    - name: resource_id
+      required: true
+    - name: quantity
+      required: true
+    - name: allocation_date
+    description: Allocation of resources to projects.
+    info_list: Allocation of resources to projects.
+    tab_groups:
+    - direction: toone
+      fks:
+      - project_id
+      name: project
+      resource: Project
+    - direction: toone
+      fks:
+      - resource_id
+      name: resource
+      resource: Resource
+    type: ResourceAllocation
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

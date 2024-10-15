@@ -1,0 +1,102 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Budget {
+    id INTEGER [primary key]
+    project_id INTEGER 
+    amount FLOAT 
+    allocated_date DATETIME 
+    }
+
+Table Project {
+    id INTEGER [primary key]
+    name VARCHAR 
+    start_date DATETIME 
+    end_date DATETIME 
+    }
+
+Table Contract {
+    id INTEGER [primary key]
+    project_id INTEGER 
+    contractor_id INTEGER 
+    start_date DATETIME 
+    end_date DATETIME 
+    }
+
+Table Contractor {
+    id INTEGER [primary key]
+    name VARCHAR 
+    contact_info VARCHAR 
+    }
+
+Table Employee {
+    id INTEGER [primary key]
+    name VARCHAR 
+    role VARCHAR 
+    }
+
+Table EmployeeAssignment {
+    id INTEGER [primary key]
+    project_id INTEGER 
+    employee_id INTEGER 
+    assignment_date DATETIME 
+    }
+
+Table Equipment {
+    id INTEGER [primary key]
+    name VARCHAR 
+    maintainer VARCHAR 
+    }
+
+Table EquipmentUsage {
+    id INTEGER [primary key]
+    project_id INTEGER 
+    equipment_id INTEGER 
+    usage_hours FLOAT 
+    usage_date DATETIME 
+    }
+
+Table Expense {
+    id INTEGER [primary key]
+    budget_id INTEGER 
+    description VARCHAR 
+    amount FLOAT 
+    expense_date DATETIME 
+    }
+
+Table Payment {
+    id INTEGER [primary key]
+    contract_id INTEGER 
+    amount FLOAT 
+    payment_date DATETIME 
+    }
+
+Table Resource {
+    id INTEGER [primary key]
+    name VARCHAR 
+    cost_per_unit FLOAT 
+    supplier VARCHAR 
+    }
+
+Table ResourceAllocation {
+    id INTEGER [primary key]
+    project_id INTEGER 
+    resource_id INTEGER 
+    quantity FLOAT 
+    allocation_date DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: Budget.(project_id) < Project.(id)
+    Ref: Contract.(contractor_id) < Contractor.(id)
+    Ref: Contract.(project_id) < Project.(id)
+    Ref: EmployeeAssignment.(employee_id) < Employee.(id)
+    Ref: EmployeeAssignment.(project_id) < Project.(id)
+    Ref: EquipmentUsage.(equipment_id) < Equipment.(id)
+    Ref: EquipmentUsage.(project_id) < Project.(id)
+    Ref: Expense.(budget_id) < Budget.(id)
+    Ref: Payment.(contract_id) < Contract.(id)
+    Ref: ResourceAllocation.(project_id) < Project.(id)
+    Ref: ResourceAllocation.(resource_id) < Resource.(id)
